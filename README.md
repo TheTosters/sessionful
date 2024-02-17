@@ -1,4 +1,4 @@
-# Useless DB
+# Sessionful
 
 [![Pub Package](https://img.shields.io/pub/v/sessionful.svg)](https://pub.dev/packages/sessionful)
 [![GitHub Issues](https://img.shields.io/github/issues/TheTosters/sessionful.svg)](https://github.com/TheTosters/sessionful/issues)
