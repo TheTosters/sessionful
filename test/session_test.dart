@@ -138,5 +138,31 @@ void main() {
       }
       expect(session.isTerminated, true);
     });
+
+    test('Check session destroy in await state [Pull]', () async {
+      final sink = _DummySink();
+      var session = SessionBuilder.create(1, sink, 82);
+
+      //Pull
+      Future.delayed(Duration(milliseconds: 100), () {
+        session.forceTermination();
+      });
+      await session.pull();
+
+      expect(session.isTerminated, true);
+    });
+
+    test('Check session destroy in await state [Pull]', () async {
+      final sink = _DummySink();
+      var session = SessionBuilder.create(1, sink, 82);
+
+      //Push Pull
+      Future.delayed(Duration(milliseconds: 100), () {
+        session.forceTermination();
+      });
+      await session.pushPull([Uint8List(2)]);
+
+      expect(session.isTerminated, true);
+    });
   });
 }

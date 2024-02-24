@@ -58,7 +58,12 @@ class Session {
     for (final b in data) {
       sink.add(b);
     }
-    final result = await wait.future;
+    Uint8List result;
+    try {
+      result = await wait.future;
+    } catch (e) {
+      result = Uint8List(0);
+    }
     _condition = null;
     return result;
   }
@@ -98,7 +103,11 @@ class Session {
       //buffer was empty, just wait for next incoming data
       final wait = Completer<Uint8List>();
       _condition = wait;
-      result = await wait.future;
+      try {
+        result = await wait.future;
+      } catch (e) {
+        result = Uint8List(0);
+      }
     }
     return result;
   }
@@ -178,6 +187,15 @@ class Session {
   ///be destroyed on receiver side.
   void sendTermination() {
     _sendSessionHeader(0xFFFFFFFF);
+    _isTerminated = true;
+  }
+
+  ///Should be called when we expect that session is in await state (pull, pushPull) and there
+  ///is condition which should exit this state, and mark this session as terminated. This allow
+  ///GarbageCollector to collect this object if it's no longer reachable. (if object is on await
+  ///GC will not release it)
+  void forceTermination() {
+    _condition?.completeError("forceTermination");
     _isTerminated = true;
   }
 }

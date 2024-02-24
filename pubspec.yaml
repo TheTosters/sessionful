@@ -1,6 +1,6 @@
 name: sessionful
 description: Dart package which allow to multiplex communication in separate channels over any transport.
-version: 1.0.0
+version: 1.0.1
 repository: https://github.com/TheTosters/sessionful
 
 environment:
